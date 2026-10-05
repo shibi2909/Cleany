@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Cleany design tokens
+   Deep green (trust, freshness) · warm white · soft beige · charcoal
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  --color-brand-950: #0a2a20;
+  --color-brand-900: #0f3b2e;
+  --color-brand-800: #144c3b;
+  --color-brand-700: #1a6150;
+  --color-brand-600: #217a62;
+  --color-brand-500: #2e9677;
+  --color-brand-400: #5bb596;
+  --color-brand-200: #bfe0d2;
+  --color-brand-100: #e2f0e9;
+  --color-brand-50: #f0f7f3;
+
+  --color-cream: #fbf8f3;
+  --color-sand-50: #f8f3ea;
+  --color-sand-100: #f3ecdf;
+  --color-sand-200: #e9dfcc;
+  --color-sand-300: #d9cbb0;
+
+  --color-ink: #1d2420;
+  --color-ink-soft: #3b4540;
+  --color-muted: #5d6862;
+  --color-line: #e6dfd3;
+
+  --color-honey: #c7892b;
+  --color-honey-50: #fcf4e6;
+  --color-whatsapp: #1fa855;
+  --color-whatsapp-dark: #178a45;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.75rem;
+
+  --shadow-soft: 0 1px 2px rgb(15 59 46 / 0.04), 0 8px 24px -12px rgb(15 59 46 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(15 59 46 / 0.04), 0 18px 40px -18px rgb(15 59 46 / 0.22);
+
+  --animate-fade-in: fade-in 0.4s ease-out both;
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 {
+    @apply text-ink;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  fieldset {
+    min-width: 0;
+  }
+  ::selection {
+    background: var(--color-brand-200);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-brand-700;
+  }
+  .display {
+    @apply font-display font-medium tracking-tight;
+  }
+  /* Subtle woven texture for beige panels */
+  .bg-weave {
+    background-image: radial-gradient(rgb(15 59 46 / 0.05) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+}
+
+/* Leaflet */
+.leaflet-container {
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  border-radius: inherit;
+  z-index: 0;
+}
