@@ -223,8 +223,17 @@ export async function saveBhkPricingAction(rows: z.input<typeof bhkPricingSchema
   if (!admin) return FORBIDDEN;
   const parsed = bhkPricingSchema.safeParse(rows);
   if (!parsed.success) return { ok: false, error: "Check the BHK prices — all fields are required." };
-  const { error } = await createAdminClient().from("bhk_pricing").upsert(parsed.data, { onConflict: "bhk_type" });
-  if (error) return { ok: false, error: "Couldn't save BHK pricing." };
+  // Update existing rows only. An upsert is validated as a full insert first, and
+  // the form doesn't send every NOT NULL column (e.g. label), so it would fail.
+  const client = createAdminClient();
+  const results = await Promise.all(
+    parsed.data.map(({ bhk_type, ...values }) => client.from("bhk_pricing").update(values).eq("bhk_type", bhk_type)),
+  );
+  const error = results.find((r) => r.error)?.error;
+  if (error) {
+    console.error("[admin:saveBhkPricing]", error);
+    return { ok: false, error: "Couldn't save BHK pricing." };
+  }
   revalidateAdmin();
   revalidateCatalog();
   return { ok: true, data: undefined, message: "BHK pricing saved." };
